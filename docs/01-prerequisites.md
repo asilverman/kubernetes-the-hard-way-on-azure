@@ -20,6 +20,13 @@ Verify the Microsoft Azure CLI 2.0 version is 2.1.0 or higher:
 az --version
 ```
 
+This tutorial was verified to work with the following `az` version:
+```
+azure-cli                         2.18.0
+core                              2.18.0
+telemetry                          1.0.6
+```
+
 ### Create a default Resource Group in a location
 
 The guide assumes you've installed the [Azure CLI 2.0](https://github.com/azure/azure-cli#installation), and will be creating resources in the `eastus2` location, within a resource group named `kubernetes`. To create this resource group, simply run the following command:
