@@ -159,7 +159,7 @@ for i in 0 1 2; do
         --image ${UBUNTULTS} \
         --nics controller-${i}-nic \
         --availability-set controller-as \
-        --nsg '' \
+        --nsg 'kubernetes-nsg' \
         --admin-username 'kuberoot' \
         --generate-ssh-keys > /dev/null
 done
@@ -198,7 +198,7 @@ for i in 0 1; do
         --nics worker-${i}-nic \
         --tags pod-cidr=10.200.${i}.0/24 \
         --availability-set worker-as \
-        --nsg '' \
+        --nsg 'kubernetes-nsg' \
         --generate-ssh-keys \
         --admin-username 'kuberoot' > /dev/null
 done
