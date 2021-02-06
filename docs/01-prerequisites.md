@@ -2,40 +2,73 @@
 
 ## Microsoft Azure
 
-This tutorial leverages the [Microsoft Azure](https://azure.microsoft.com) to streamline provisioning of the compute infrastructure required to bootstrap a Kubernetes cluster from the ground up. [Sign up](https://azure.microsoft.com/free/) for $200 in free credits. In Azure Free Trial there is a limit of 4 Cores available, therefore tutorial instructions must be changed to create 4 nodes instead of 6 (2 controllers and 2 workers).
+This tutorial leverages the [Azure](https://azure.microsoft.com) Cloud to streamline provisioning of the compute infrastructure required to bootstrap a Kubernetes cluster from the ground up.
 
-[Estimated cost](https://azure.microsoft.com/pricing/calculator/) to run this tutorial: $0.4 per hour ($10 per day).
+### Sign up for Azure
+
+To begin, [Sign up](https://azure.microsoft.com/free/) for for a free account and $200 in credits.
+
+> In Azure Free Trial there is a limit of 4 Cores available, therefore tutorial instructions must be changed to create 4 nodes instead of 6 (2 controllers and 2 workers).
+
+> The [Estimated cost](https://azure.microsoft.com/pricing/calculator/) to run this tutorial: $0.4 per hour ($10 per day).
 
 > The compute resources required for this tutorial will not exceed the Microsoft Azure free tier.
 
 ## Microsoft Azure Cloud Platform SDK
 
-### Install the Microsoft Azure CLI 2.0
+We will use the [Azure Command Line Interface](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli) throughout this tutorial and the examples will be written in `bash` shell.
 
-Follow the Microsoft Azure CLI 2.0 [documentation](https://github.com/azure/azure-cli#installation) to install and configure the `az` command line utility.
+### Install the Azure CLI 2.0
 
-Verify the Microsoft Azure CLI 2.0 version is 2.1.0 or higher:
+Follow the Azure CLI 2.0 [documentation](https://github.com/azure/azure-cli#installation) to install and configure the `az` command line utility.
+
+Verify the Azure CLI 2.0 version is 2.1.0 or higher:
 
 ```shell
 az --version
 ```
 
-This tutorial was verified to work with the following `az` version:
+This tutorial was verified to work on Ubuntu via [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10), and Visual Studio Code on Windows using the following versions:
+
+- `az cli: 2.14.0`
+- `bash: 4.4.20`
+- `Ubuntu: 18.04 (bionic)`
+
+If you are starting from scratch, here is a good article on how to install and configure all these components: [Running Ubuntu on Windows 10 with WSL2](https://maurogiusti.medium.com/running-ubuntu-on-windows-10-with-wsl2-c4f06b3c353)
+
+### Login to Azure
+
+From your bash prompt run:
+
+```shell
+az login
 ```
-azure-cli                         2.18.0
-core                              2.18.0
-telemetry                          1.0.6
+
+and follow the instructions to log in.
+
+### Select a Subscription to work with
+
+If you have more than one Azure Subscription (a free account can only have one), select the one you want to use. To see the list of your Azure Subscriptions run:
+
+```shell
+az account list -o table
+```
+
+To select the Subscription to use run:
+
+```shell
+az account set --subscription "<Your subscription Name or Id>"
 ```
 
 ### Create a default Resource Group in a location
 
-The guide assumes you've installed the [Azure CLI 2.0](https://github.com/azure/azure-cli#installation), and will be creating resources in the `eastus2` location, within a resource group named `kubernetes`. To create this resource group, simply run the following command:
+To create a resource group named 'kubernetes' to host the resources needed for the tutorial in the `eastus2` location, run:
 
 ```shell
 az group create -n kubernetes -l eastus2
 ```
 
-> Use the `az account list-locations` command to view additional locations.
+> You can use the `az account list-locations` command to view additional locations.
 
 ## Running Commands in Parallel with tmux
 
