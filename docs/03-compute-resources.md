@@ -14,7 +14,7 @@ The Kubernetes [networking model](https://kubernetes.io/docs/concepts/cluster-ad
 
 In this section a dedicated [Virtual Network](https://docs.microsoft.com/azure/virtual-network/virtual-networks-overview) (VNet) network will be setup to host the Kubernetes cluster.
 
-Create the `kubernetes-vnet` custom VNet network with a subnet `kubernetes` provisioned with an IP address range large enough to assign a private IP address to each node in the Kubernetes cluster.:
+Create the `kubernetes-vnet` custom VNet network with a subnet `kubernetes-subnet` provisioned with an IP address range large enough to assign a private IP address to each node in the Kubernetes cluster.:
 
 ```shell
 az network vnet create -g kubernetes \
@@ -33,6 +33,8 @@ Create a firewall ([Network Security Group](https://docs.microsoft.com/azure/vir
 az network nsg create -g kubernetes -n kubernetes-nsg
 ```
 
+Associate the `kubernetes-nsg` firewall to the `kubernetes-subnet` subnet in the `kubernetes-vnet` vnet:
+
 ```shell
 az network vnet subnet update -g kubernetes \
   -n kubernetes-subnet \
@@ -41,6 +43,8 @@ az network vnet subnet update -g kubernetes \
 ```
 
 Create a firewall rule that allows external SSH and HTTPS:
+
+> If you want to restrict communication from your current IP Address only, retrieve your public IP address with `curl ifconfig.co` and then use that ip address in `--source-address-prefix 'your.i.p.address'`
 
 ```shell
 az network nsg rule create -g kubernetes \
@@ -91,6 +95,8 @@ kubernetes-allow-api-server  Inbound            1001    6443
 ### Kubernetes Public IP Address
 
 Allocate a static IP address that will be attached to the external load balancer fronting the Kubernetes API Servers:
+
+> This creates a public IP address resource named `kubernetes-pip` assigned to a load balancer (nlb) resource named `kubernetes-lb`
 
 ```shell
 az network lb create -g kubernetes \

@@ -6,7 +6,7 @@ In this lab you will install the command line utilities required to complete thi
 
 The `cfssl` and `cfssljson` command line utilities will be used to provision a [PKI Infrastructure](https://en.wikipedia.org/wiki/Public_key_infrastructure) and generate TLS certificates.
 
-Download and install `cfssl` and `cfssljson` from the [cfssl repository](https://github.com/cloudflare/cfssl/releases):
+If you don't have them installed (check with [Verification](#verification)), you can download and install `cfssl` and `cfssljson` from the [cfssl repository](https://github.com/cloudflare/cfssl/releases):
 
 ### OS X
 
@@ -127,7 +127,7 @@ kubectl version --client
 Client Version: version.Info{Major:"1", Minor:"17", GitVersion:"v1.17.3", GitCommit:"06ad960bfd03b39c8310aaf92d1e7c12ce618213", GitTreeState:"clean", BuildDate:"2020-02-13T18:08:14Z", GoVersion:"go1.13.8", Compiler:"gc", Platform:"darwin/amd64"}
 ```
 
-To quick check kubectl version, you can also use the following command : 
+To quick check kubectl version, you can also use the following command :
 
 ```shell
 kubectl version --short
