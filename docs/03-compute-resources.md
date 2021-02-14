@@ -1,7 +1,11 @@
 # Provisioning Compute Resources
 
 Kubernetes requires a set of machines to host the Kubernetes control plane and the worker nodes where containers are ultimately run. In this lab you will provision the compute resources required for running a secure and highly available Kubernetes cluster within a single [Resource Group](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-overview#resource-groups) in a single [region](https://azure.microsoft.com/global-infrastructure/regions/)
-Create a default Resource Group in a region
+
+Here is a high level picture of the Azure resources you are going to create in this step:
+
+![compute resources](images/compute-resources.png)
+
 > Ensure a resource group has been created as described in the [Prerequisites](01-prerequisites.md#create-a-deafult-resource-group-in-a-region) lab.
 
 ## Networking
@@ -135,6 +139,22 @@ az vm image list --location eastus2 --publisher Canonical --offer UbuntuServer -
 UBUNTULTS="Canonical:UbuntuServer:18.04-LTS:18.04.202002180"
 ```
 
+### Virtual Machine size
+
+To list the available machine sizes in the selected region (eastus2), run the following command:
+
+```shell
+az vm list-sizes --location eastus2 -o table
+```
+
+Compare the pricing of the VMs here [Linux Virtual Machines Pricing](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/)
+
+Then select the size you prefer - in this example, we will use the Standard_B1ms size (1 CPU, 2 GiB of RAM, 4 GiB of Disk) that costs about $11/month.
+
+```shell
+VMSIZE="Standard_B1ms"
+```
+
 ### Kubernetes Controllers
 
 Create two compute instances which will host the Kubernetes control plane in `controller-as` [Availability Set](https://docs.microsoft.com/azure/virtual-machines/linux/tutorial-availability-sets#availability-set-overview):
@@ -162,10 +182,10 @@ for i in 0 1 2; do
     echo "[Controller ${i}] Creating VM..."
     az vm create -g kubernetes \
         -n controller-${i} \
-        --image ${UBUNTULTS} \
+        --image ${UBUNTULTS:-Canonical:UbuntuServer:18.04-LTS:18.04.202002180} \
+        --size ${VMSIZE:-Standard_B1ms} \
         --nics controller-${i}-nic \
         --availability-set controller-as \
-        --nsg 'kubernetes-nsg' \
         --admin-username 'kuberoot' \
         --generate-ssh-keys > /dev/null
 done
@@ -200,11 +220,11 @@ for i in 0 1; do
     echo "[Worker ${i}] Creating VM..."
     az vm create -g kubernetes \
         -n worker-${i} \
-        --image ${UBUNTULTS} \
+        --image ${UBUNTULTS:-Canonical:UbuntuServer:18.04-LTS:18.04.202002180} \
+        --size ${VMSIZE:-Standard_B1ms} \
         --nics worker-${i}-nic \
         --tags pod-cidr=10.200.${i}.0/24 \
         --availability-set worker-as \
-        --nsg 'kubernetes-nsg' \
         --generate-ssh-keys \
         --admin-username 'kuberoot' > /dev/null
 done
