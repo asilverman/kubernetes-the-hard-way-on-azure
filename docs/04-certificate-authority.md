@@ -370,11 +370,11 @@ cat > service-account-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milan",
+      "C": "US",
+      "L": "Portland",
       "O": "Kubernetes",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Italy"
+      "ST": "Oregon"
     }
   ]
 }
