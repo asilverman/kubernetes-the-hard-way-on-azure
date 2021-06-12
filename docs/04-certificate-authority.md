@@ -2,6 +2,12 @@
 
 In this lab you will provision a [PKI Infrastructure](https://en.wikipedia.org/wiki/Public_key_infrastructure) using CloudFlare's PKI toolkit, [cfssl](https://github.com/cloudflare/cfssl), then use it to bootstrap a Certificate Authority, and generate TLS certificates for the following components: etcd, kube-apiserver, kubelet, and kube-proxy.
 
+If you are working on this repo, create a directory called `workdir` and use that to store the files:
+```shell
+mkdir -p workdir
+cd workdir
+```
+
 ## Certificate Authority
 
 In this section you will provision a Certificate Authority that can be used to generate additional TLS certificates.
@@ -38,11 +44,11 @@ cat > ca-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milan",
+      "C": "US",
+      "L": "Portland",
       "O": "Kubernetes",
-      "OU": "MI",
-      "ST": "Italy"
+      "OU": "CA",
+      "ST": "Oregon"
     }
   ]
 }
@@ -80,11 +86,11 @@ cat > admin-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milan",
+      "C": "US",
+      "L": "Portland",
       "O": "system:masters",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Italy"
+      "ST": "Oregon"
     }
   ]
 }
@@ -128,11 +134,11 @@ cat > ${instance}-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milan",
+      "C": "US",
+      "L": "Portland",
       "O": "system:nodes",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Italy"
+      "ST": "Oregon"
     }
   ]
 }
@@ -178,11 +184,11 @@ cat > kube-controller-manager-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milan",
+      "C": "US",
+      "L": "Portland",
       "O": "system:kube-controller-manager",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Italy"
+      "ST": "Oregon"
     }
   ]
 }
@@ -219,11 +225,11 @@ cat > kube-proxy-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milano",
+      "C": "US",
+      "L": "Portland",
       "O": "system:node-proxier",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Italy"
+      "ST": "Oregon"
     }
   ]
 }
@@ -264,11 +270,11 @@ cat > kube-scheduler-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milan",
+      "C": "US",
+      "L": "Portland",
       "O": "system:kube-scheduler",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Italy"
+      "ST": "Oregon"
     }
   ]
 }
@@ -314,11 +320,11 @@ cat > kubernetes-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milan",
+      "C": "US",
+      "L": "Portland",
       "O": "Kubernetes",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Italy"
+      "ST": "Oregon"
     }
   ]
 }
@@ -364,11 +370,11 @@ cat > service-account-csr.json <<EOF
   },
   "names": [
     {
-      "C": "IT",
-      "L": "Milan",
+      "C": "US",
+      "L": "Portland",
       "O": "Kubernetes",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Italy"
+      "ST": "Oregon"
     }
   ]
 }
@@ -392,7 +398,7 @@ service-account.pem
 ```
 
 ## Distribute the Client and Server Certificates
-## If you're following the previous steps the username used to create the linux VM would be kuberoot 
+## If you're following the previous steps the username used to create the linux VM would be kuberoot
 
 Copy the appropriate certificates and private keys to each worker instance:
 
